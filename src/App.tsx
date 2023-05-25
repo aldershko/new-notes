@@ -1,5 +1,5 @@
 
-import LoginLayout from '../components/Layout/LoginLayout'
+import LoginLayout from './components/Layout/LoginLayout'
 
 
 function App() {
