@@ -4,6 +4,10 @@ import { useForm } from 'react-hook-form'
 
 const page = () => {
 
+  const onFormSubmit = (data : any) =>{
+    console.log(data)
+  }
+
 const {
   register,
   handleSubmit,
@@ -12,8 +16,8 @@ const {
 } = useForm()
 
   return (
-   <div className='flex min-h-screen justify-center items-center bg-amber-400 '>
-    <div className='flex flex-col justify-center items-center w-96  border-none rounded-xl bg-slate-500'>
+    <form onSubmit={handleSubmit(onFormSubmit)}>
+   
       <h2 className='mt-10 text-2xl text-gray- font-bold '>Sign Up</h2>
       <TextInput
       type="text"
@@ -48,12 +52,11 @@ const {
       />
       </div>
 
-      <button className='bg-black px-5 py-2 rounded-full my-5 mb-10  '>Register</button>
+      <button className='text-white bg-black px-5 py-2 rounded-full my-5 mb-10  '>Register</button>
       
 
-    </div>
-
-   </div>
+    
+   </form>
   )
 }
 

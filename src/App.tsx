@@ -1,5 +1,5 @@
-import LoginForm from '../components/Form/LoginForm'
-import SignInForm from '../components/Form/SignInForm'
+
+import LoginLayout from '../components/Layout/LoginLayout'
 
 
 function App() {
@@ -7,8 +7,7 @@ function App() {
 
   return (
     <>
-    <SignInForm />
-      {/* <LoginForm /> */}
+    <LoginLayout />
         
     </>
   )

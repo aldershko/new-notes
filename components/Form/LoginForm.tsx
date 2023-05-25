@@ -1,10 +1,11 @@
-'use client';
+
 
 import React from 'react'
 import TextInput from '../Layout/TextInput'
 import { useForm } from 'react-hook-form'
+import { LoginState } from '../Layout/LoginLayout'
 
-const test = () => {
+const test = ( props : {stateHandler : (newState : LoginState) => void}) => {
 
   const onFormSubmit =( data:any ) =>{
     console.log(data)
@@ -20,8 +21,7 @@ const {
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
-   <div className='flex min-h-screen justify-center items-center bg-amber-400 '>
-    <div className='flex flex-col justify-center items-center w-96  border-none rounded-xl bg-slate-500 text-center'>
+   
       <h2 className='mt-10 text-2xl text-gray-300 font-bold '>LOGIN</h2>
       <TextInput
       type="text"
@@ -78,6 +78,9 @@ const {
             <button
               
               className="text-white font-semibold px-2 hover:text-black"
+              onClick={()=>{
+                props.stateHandler(LoginState.REGISTER)
+              }}
             >
               Sign Up
             </button>
@@ -87,15 +90,16 @@ const {
             <button
               
               className="text-white font-semibold px-2 hover:text-black"
+              onClick={()=>{
+                props.stateHandler(LoginState.RESET)
+              }}
             >
               Click here
             </button>
           </div>
         </div>
 
-    </div>
-
-   </div>
+    
    </form>
   )
 }
