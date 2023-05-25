@@ -1,8 +1,9 @@
 import React from 'react'
 import TextInput from '../Layout/TextInput'
 import { useForm } from 'react-hook-form'
+import { LoginState } from '../Layout/LoginLayout'
 
-const page = () => {
+const page = (props :{stateHandler :(newState:LoginState) => void}) => {
 
   const onFormSubmit = (data : any) =>{
     console.log(data)
