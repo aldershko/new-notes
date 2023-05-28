@@ -1,5 +1,6 @@
 
-import LoginLayout from './components/Layout/LoginLayout'
+// import LoginLayout from './components/Layout/LoginLayout'
+import Test from './components/Layout/test'
 
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <>
-    <LoginLayout />
+    <Test />
         
     </>
   )
