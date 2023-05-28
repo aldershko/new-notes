@@ -1,14 +1,52 @@
 
 
-import React from 'react'
+import React , {useImperativeHandle, useState} from 'react'
 import TextInput from '../Layout/TextInput'
 import { useForm } from 'react-hook-form'
 import { LoginState } from '../Layout/LoginLayout'
+import { signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from 'firebase/auth'
+import { auth } from '../../firebase/firebaseConfig'
+
 
 const test = ( props : {stateHandler : (newState : LoginState) => void}) => {
 
+  const [loginError,setLoginError] = useState({error : false, msg: ""})
+
+  const provider = new GoogleAuthProvider()
+
   const onFormSubmit =( data:any ) =>{
     console.log(data)
+    signIn(data.email,data.password)
+    
+  }
+
+  const signIn =  async(email:string,password:string) => {
+    try {
+      const user = await signInWithEmailAndPassword(auth,email,password)
+      console.log(user)
+    } catch (error:any) {
+      setError(
+        "email",
+        {type:"custom",message:"user not found"},
+        {shouldFocus : true}
+      
+      )
+      setLoginError({error : true, msg: error.message})
+      
+    }
+  }
+
+  const signInWithGooglePopup = async() =>{
+    try {
+      const result = await signInWithPopup(auth,provider)
+      const credential  = GoogleAuthProvider.credentialFromResult(result)
+      const token = credential?.accessToken
+      const user =  result.user
+      console.log(user)
+    } catch (error:any) {
+      console.log(error)
+      
+    }
   }
 
 
@@ -66,6 +104,15 @@ const {
           >
             LOGIN
           </button>
+
+          {/* GOOGLE SIGNIN BUTTON */}
+
+         <div className='flex flex-col'>
+           <button className='mt-2 py-2 border flex flex-col text-center items-center  justify-center border-white-500' onClick={()=>{
+            signInWithGooglePopup()
+          }}>
+            SIGN IN WITH GOOGLE
+          </button></div>
 
           {/* LINKS */}
 

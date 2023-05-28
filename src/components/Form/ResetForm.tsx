@@ -1,12 +1,17 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import {useForm} from 'react-hook-form'
 import TextInput from '../Layout/TextInput'
 import { LoginState } from '../Layout/LoginLayout'
+import { sendPasswordResetEmail  } from 'firebase/auth'
+import { auth } from '../../firebase/firebaseConfig'
 
 const ResetForm = (props:{stateHandler : (newState:LoginState) => void}) => {
 
+  const [resetError,setResetError] = useState({error:false , msg: ""})
+
     const onFormSubmit = (data: any) =>{
         console.log(data)
+        sendMail(data.email)
     }
 
     const{
@@ -14,6 +19,20 @@ const ResetForm = (props:{stateHandler : (newState:LoginState) => void}) => {
         handleSubmit,
         formState:{errors}
     } = useForm()
+
+
+    const sendMail = async ( email:string ) =>{
+     try {
+      const user = await sendPasswordResetEmail(auth,email)
+      console.log(user)
+      
+
+     } catch (error:any) {
+      setResetError({ error:true , msg:error.message})
+
+      
+     }
+    }
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)}>
@@ -40,6 +59,11 @@ const ResetForm = (props:{stateHandler : (newState:LoginState) => void}) => {
 
     />
     </div>
+    {resetError.error && (
+      <div className='mb-2 text-center text-sm text-red-500'>
+        {resetError.msg}
+      </div>
+    )}
 
     <button className='text-white bg-black px-5 py-2 rounded-full my-5 mb-10  '>Reset</button>
 
@@ -75,3 +99,5 @@ const ResetForm = (props:{stateHandler : (newState:LoginState) => void}) => {
 }
 
 export default ResetForm
+
+
