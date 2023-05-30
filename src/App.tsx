@@ -1,6 +1,7 @@
 
 // import LoginLayout from './components/Layout/LoginLayout'
-import Test from './components/Layout/test'
+import MainLayout from './components/Layout/MainLayout'
+
 
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
 
   return (
     <>
-    <Test />
+    <MainLayout />
         
     </>
   )
