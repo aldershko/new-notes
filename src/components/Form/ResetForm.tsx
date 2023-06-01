@@ -1,6 +1,6 @@
 import React ,{useState} from 'react'
 import {useForm} from 'react-hook-form'
-import TextInput from '../Layout/TextInput'
+import TextInput from '../UI/TextInput'
 import { LoginState } from '../Layout/LoginLayout'
 import { sendPasswordResetEmail  } from 'firebase/auth'
 import { auth } from '../../firebase/firebaseConfig'

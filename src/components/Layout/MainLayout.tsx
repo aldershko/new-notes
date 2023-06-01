@@ -1,14 +1,14 @@
 
-import { ReactNode } from 'react';
+import { ReactNode,useState } from 'react';
 import Header from '../Header';
 import {
-    MdArchive,
-    MdDelete,
-    MdFileCopy,
-    MdLabel,
-    MdNotifications,
-  } from "react-icons/md";
-import Sidebar from '../SideBar';
+  MdDeleteOutline,
+  MdOutlineNotifications,
+  MdLightbulbOutline,
+} from "react-icons/md";
+import { TbArchive, TbEdit } from "react-icons/tb";
+import Sidebar from '../Sidebar';
+import { MainContext } from '../Contexts/MainContext';
   
 
 
@@ -21,19 +21,29 @@ icon:ReactNode
 
 
 const MainLayout = () => {
+  
+
+  const [headerTitle,setHeaderTitle] = useState("Now Notes")
+
+  const titleSetter = (title:string) =>{
+    setHeaderTitle(title)
+  }
 
     const menuIconSize = 25
 
 const menuList: MenuItem[] =[
-    {id:0,title:'Notes',icon:<MdFileCopy size ={menuIconSize} />},
-    {id:1,title:'Reminders',icon:<MdNotifications size ={menuIconSize} />},
-    {id:2,title:'Labels',icon:<MdLabel size ={menuIconSize} />},
-    {id:3,title:'Archive',icon:<MdArchive size ={menuIconSize} />},
-    {id:4,title:'Trash',icon:<MdDelete size ={menuIconSize} />},
+    {id:0,title:'Notes',icon:<MdLightbulbOutline size ={menuIconSize} />},
+    {id:1,title:'Reminders',icon:<MdOutlineNotifications size ={menuIconSize} />},
+    {id:2,title:'Labels',icon:<TbEdit size ={menuIconSize} />},
+    {id:3,title:'Archive',icon:<TbArchive size ={menuIconSize} />},
+    {id:4,title:'Trash',icon:<MdDeleteOutline size ={menuIconSize} />},
 ]
 
   return (
     <>
+    <MainContext.Provider
+    value={{ title:headerTitle,setTitle:titleSetter }}>
+
     <div className="min-h-screen font-inter flex flex-col">
       <header className="border border-divider">
         <Header />
@@ -47,6 +57,7 @@ const menuList: MenuItem[] =[
         </nav>
       </div>
     </div>
+    </MainContext.Provider>
   </>
 );
 };

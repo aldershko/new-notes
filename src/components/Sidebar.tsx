@@ -1,51 +1,65 @@
-import { ReactNode } from "react"
+import React, { ReactNode, useContext, useState } from "react";
+import { MenuItem } from "./Layout/MainLayout";
+import Button from "./UI/Button";
+import { MainContext } from "./Contexts/MainContext";
 
-import { MenuItem } from "./Layout/MainLayout"
-import Button from "./Layout/Button"
-
-
- const Sidebar = (props:{
-    menuList : MenuItem[]
-    selectHandler?:(component:ReactNode) => void
+const Sidebar = (props: {
+  menuList: MenuItem[];
+  selectHandler?: (component: ReactNode) => void;
 }) => {
+  const { setTitle } = useContext(MainContext);
+  const [currentSelectedMenu, setCurrentSelectedMenu] = useState(0);
 
-    const {menuList} = props
+  const { menuList } = props;
 
-    const buildMenu = () =>{
-        return menuList.map((menuItem,index) =>{
-            return(
-                <div className="my-2" key={index}>
-                <Button
-                    customCssProps=""
-                    key={menuItem.id}
-                    buttonId={menuItem.id}
-                    type={"button"}
-                    colorScheme={"white"}
-                    variant={"ghost"}
-                    padding={"normal"}
-                    radius={"rightFull"}
-                    lightIcon
-                    fullWidth
-                    iconPaddingFull
-                    justifyContent={"start"}
-                    icon={menuItem.icon}
-                >
-                    {menuItem.title}
-                </Button>
-                </div>
-            )
-        })
-    }
+  const menuHandler = (id: number) => {
+    setCurrentSelectedMenu(id);
+    if (setTitle) setTitle(menuList[id].title);
+  };
+
+  //Build Menu items
+  const buildMenu = () => {
+    return menuList.map((menuItem, index) => {
+      return (
+        <div className="" key={index}>
+          {/* <span className="ml-5 text-xs font-semibold tracking-widest text-stoneGray">
+                  
+                </span> */}
+          <Button
+            customCssProps="font-medium text-sm"
+            key={menuItem.id}
+            buttonId={menuItem.id}
+            type={"button"}
+            colorScheme={"white"}
+            variant={"ghost"}
+            padding={"normal"}
+            radius={"rightFull"}
+            lightIcon
+            isActive={currentSelectedMenu === menuItem.id}
+            fullWidth
+            onMenuClick={menuHandler}
+            iconPaddingFull
+            justifyContent={"start"}
+            icon={menuItem.icon}
+          >
+            {menuItem.title}
+          </Button>
+        </div>
+      );
+    });
+  };
 
   return (
-   <>
-    {buildMenu()}
-    <div className="absolute bottom-0 flex w-64 flex-col border-t border-divider">
+    <>
+      {/* <div className="justify-left relative flex h-14 flex-row items-center  border-b border-divider py-2 px-3 align-middle "></div> */}
+      {/* {buildMenu()} */}
+      {buildMenu()}
+      <div className="absolute bottom-0 flex w-64 flex-col border-t border-divider">
         {/* <span className="text-center">LOGOUT</span> */}
         {/* <Header /> */}
       </div>
-   </>
-  )
-}
+    </>
+  );
+};
 
-export default Sidebar
+export default Sidebar;

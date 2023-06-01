@@ -1,7 +1,7 @@
 
 
 import React , {useImperativeHandle, useState} from 'react'
-import TextInput from '../Layout/TextInput'
+import TextInput from '../UI/TextInput'
 import { useForm } from 'react-hook-form'
 import { LoginState } from '../Layout/LoginLayout'
 import { signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider } from 'firebase/auth'

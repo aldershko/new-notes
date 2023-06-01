@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TextInput from '../Layout/TextInput'
+import TextInput from '../UI/TextInput'
 import { useForm } from 'react-hook-form'
 import { LoginState } from '../Layout/LoginLayout'
 import { createUserWithEmailAndPassword } from 'firebase/auth'

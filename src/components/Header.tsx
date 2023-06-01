@@ -1,6 +1,6 @@
 import {
     MdClose,
-    MdFileCopy,
+    
     MdMenu,
     MdOutlineDashboardCustomize,
     MdRefresh,
@@ -8,9 +8,12 @@ import {
     MdSettings,
   } from "react-icons/md";
   import { TbUser } from "react-icons/tb";
-  import Button from "./Layout/Button";
+  import Button from "./UI/Button";
+  import { useContext } from "react";
+  import { MainContext } from "./Contexts/MainContext";
 
 const Header = () => {
+  const {title} = useContext(MainContext)
   return (
     <>
       <header>
@@ -29,7 +32,12 @@ const Header = () => {
                   iconOnly
                   icon={<MdMenu size={24} />}
                 ></Button>
-                <Button
+                  <div className=" flex flex-row text-center align-middle items-center rounded-md text-gray-800 justify-center whitespace-nowrap w-40">
+                  <span className="flex justify-center text-xl font-medium items-center">
+                    {title}
+                  </span>
+                </div>
+                {/* <Button
                   customCssProps=" text-gray-800 text-base right-2.5 bottom-1"
                   type="button"
                   colorScheme="white"
@@ -38,11 +46,12 @@ const Header = () => {
                   padding="normal"
                   buttonSize="lg"
                   icon={<MdFileCopy size={21} />}
-                >
-                  NOW NOTES
-                </Button>
+                > */}
+                {/* </Button> */}
+                  
               </div>
               <div className="flex bg-gray-100 rounded-md py-1 px-2 flex-row w-128">
+             
                 <Button
                   customCssProps=" text-gray-600 right-2.5 bottom-1"
                   type="button"
