@@ -110,18 +110,19 @@ const Button = (props: ButtonPropsType) => {
       text_lighter: "text-white",
       text_darker: "text-gray-900",
       icon_lighter: "text-gray-600",
-      hover_darker: " hover:bg-gray-700 ",
-      hover_lighter: "hover:bg-gray-200",
+      hover_darker: " hover:bg-gray-900  ",
+      hover_lighter: "hover:bg-gray-200 hover:text-gray-800",
       hover_text_lighter: "hover:text-gray-500",
       fill_lighter: "fill-white",
       fill_darker: "fill-gray-900",
+      
     },
   };
 
   const variants = {
     ghost: ` ${(colorSchemes as any)[colorScheme!].text_darker} ${
       !isDisabled && !isActive && (colorSchemes as any)[colorScheme!].hover_lighter
-    }`,
+    } }}`,
     iconOnly: ` ${(colorSchemes as any)[colorScheme!].text_darker} ${
       !isDisabled && !isActive && (colorSchemes as any)[colorScheme!].hover_lighter
     } ${
@@ -156,7 +157,7 @@ const Button = (props: ButtonPropsType) => {
           justifyContent
             ? `${(justifyContents as any)[justifyContent!]}`
             : "justify-center"
-        } text-center ${isActive ? 'bg-keepYellow':''} align-middle font-inter font-medium flex-row  ${
+        } text-center ${isActive ? 'bg-keepYellow ':''} align-middle font-inter font-medium flex-row  ${
           (borderRadius as any)[radius!]
         } ${(shadowSizes as any)[shadowSize!]} ${
           (buttonSizes as any)[buttonSize!]
@@ -186,7 +187,7 @@ const Button = (props: ButtonPropsType) => {
             lightIcon
               ? `${(colorSchemes as any)[colorScheme!].icon_lighter}`
               : ""
-          }`}
+          }${isActive? "text-gray-900":""}`}
         >
           {isLoading && icon ? 'getSpinner()' : icon}
         </div>
