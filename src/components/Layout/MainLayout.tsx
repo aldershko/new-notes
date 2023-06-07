@@ -9,6 +9,7 @@ import {
 import { TbArchive, TbEdit } from "react-icons/tb";
 import Sidebar from '../Sidebar';
 import { MainContext } from '../Contexts/MainContext';
+import NoteCreator from '../UI/NoteCreator';
   
 
 
@@ -18,6 +19,20 @@ title:string
 icon:ReactNode
 }
 
+
+export type Note = {
+  id:string
+  content:{
+    header:string
+    body:{
+      bodyType: "task" | "plain",
+      bodyContent:string
+    }
+  }
+  config:{
+    color:string
+  }
+}
 
 
 const MainLayout = () => {
@@ -50,7 +65,11 @@ const menuList: MenuItem[] =[
       </header>
 
       <div className="flex-1 flex flex-col sm:flex-row">
-        <main className="flex-1 bg-white"></main>
+        <main className="flex-1 bg-white">
+          <div className='flex flex-col m-3'>
+            <NoteCreator />
+          </div>
+        </main>
 
         <nav className="order-first sm:w-72 bg-white">
           <Sidebar menuList={menuList} />
