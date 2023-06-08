@@ -151,7 +151,7 @@ const {
             radius="md"
             icon={
               <div className="h-8 w-8 rounded-full overflow-clip">
-                <img src="/src/assets/googleIcon.jpg" alt="googleIcon" />
+                <img src="../../assets/googleIcon.jpg" alt="googleIcon" />
               </div>
             }
             shadowSize="sm"
