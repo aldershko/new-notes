@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useForm} from 'react-hook-form'
 import TextInput from './TextInput';
 import { Note } from '../Layout/MainLayout';
 import NoteList from './NoteList';
+import { ref, push, set, get , child } from "firebase/database"
+import { database } from '../../firebase/firebaseConfig';
 
 const NoteCreator = () => {
 
@@ -31,6 +33,9 @@ const NoteCreator = () => {
             }   
         }
         setNotesList([...notesList,note])
+        const noteListRef =  ref(database,"/Notes/active")
+        const newNoteRef =  push(noteListRef)
+        set(newNoteRef,note)
       }
 
       const onFormSubmit = (data:any) =>{
@@ -41,6 +46,17 @@ const NoteCreator = () => {
         setValue("header","")
         setValue("body",'')
       }
+
+      useEffect(() =>{
+        const dbRef = ref(database)
+        get(child(dbRef,"/Notes/active")).then((snapshot) =>{
+          if(snapshot.exists()){
+            const activeNotes = Object.values(snapshot.val())
+            console.log(snapshot.val())
+            setNotesList(activeNotes as Note[])
+          }
+        })
+      },[])
       
 
   return (
