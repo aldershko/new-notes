@@ -11,9 +11,22 @@ import {
   import Button from "./UI/Button";
   import { useContext } from "react";
   import { MainContext } from "./Contexts/MainContext";
+  import { signOut } from "firebase/auth";
+  import { auth } from "../firebase/firebaseConfig";
+  import { useNavigate} from 'react-router-dom'
 
 const Header = () => {
   const {title} = useContext(MainContext)
+  const navigate =  useNavigate()
+
+  const signUserOut = () =>{
+    signOut(auth).then(() =>{
+      console.log("user signed out")
+      navigate("/")
+
+    })
+  }
+
   return (
     <>
       <header>
@@ -132,6 +145,7 @@ const Header = () => {
                   padding="normal"
                   buttonSize="lg"
                   iconOnly
+                  onClick={signUserOut}
                   icon={<TbUser size={24} />}
                 ></Button>
               </div>
