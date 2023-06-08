@@ -3,10 +3,12 @@ import Loginform from '../Form/LoginForm'
 import SignInForm from '../Form/SignInForm'
 import ResetForm  from '../Form/ResetForm'
 
-export enum LoginState  {
-    LOGIN,
-    REGISTER,
-    RESET,
+
+export enum LoginState {
+  LOGIN,
+  REGISTER,
+  RESET,
+  RESET_PASSWORD
 }
 
 
@@ -29,7 +31,7 @@ const LoginLayout = () => {
         (<Loginform stateHandler = {stateChangeHandler} />) : ""} 
         { loginState === LoginState.REGISTER ?
         (<SignInForm stateHandler = {stateChangeHandler} />) : ""} 
-        { loginState === LoginState.RESET ?
+        { loginState === LoginState.RESET_PASSWORD ?
         (<ResetForm stateHandler = {stateChangeHandler} />) : ""} 
     </div>
     </div>

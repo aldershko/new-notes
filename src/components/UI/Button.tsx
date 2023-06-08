@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Spinner from "./Spinner";
 // import Spinner from "./Spinner";
 
 export type ButtonPropsType = {
@@ -130,13 +131,13 @@ const Button = (props: ButtonPropsType) => {
     } text-slate-700 flex  text-xs shrink-0 `,
   };
 
-//   const getSpinner = () => {
-//     return (
-//       <>
-//         <Spinner size={buttonSize} />
-//       </>
-//     );
-//   };
+  const getSpinner = () => {
+    return (
+      <>
+        <Spinner size={buttonSize} />
+      </>
+    );
+  };
 
   return (
     <>
@@ -189,11 +190,11 @@ const Button = (props: ButtonPropsType) => {
               : ""
           }${isActive? "text-gray-900":""}`}
         >
-          {isLoading && icon ? 'getSpinner()' : icon}
+          {isLoading && icon ? getSpinner() : icon}
         </div>
         {!iconOnly && (
           <div className={`${icon && "mr-4"} py-2 ${!icon && "px-3"}`}>
-            {isLoading ? "getSpinner()" : children}
+            {isLoading ? getSpinner() : children}
           </div>
         )}
       </button>
