@@ -29,7 +29,7 @@ const Header = () => {
 
   return (
     <>
-      <header>
+     
         <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 ">
           <div className="flex flex-row justify-between items-center w-full ">
             <div className="flex gap-20 items-center ">
@@ -152,7 +152,7 @@ const Header = () => {
             </div>
           </div>
         </nav>
-      </header>
+     
     </>
   )
 }
