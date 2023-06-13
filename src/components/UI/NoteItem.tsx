@@ -5,6 +5,7 @@ import { MdMoreVert, MdOutlineArchive, MdOutlineImage } from 'react-icons/md'
 import { TbBellPlus, TbPalette, TbPinned, TbUserPlus } from 'react-icons/tb'
 import { Menu } from "@headlessui/react";
 import ColorSelector from '../ColorSelector'
+import { NoteCreatorContext } from "../Contexts/NoteCreatorContext";
 
 
 export type ActionsButtonType = {
@@ -71,7 +72,8 @@ const NoteItem = (props:Note) => {
         <Menu.Items>
           <Menu.Item as="div" className="absolute">
             <ColorSelector
-              
+            noteId={props.id}
+              noteColor={props.config.color}
             />
           </Menu.Item>
         </Menu.Items>

@@ -3,8 +3,10 @@ import {useForm} from 'react-hook-form'
 import TextInput from './TextInput';
 import { Note } from '../Layout/MainLayout';
 import NoteList from './NoteList';
-import { ref, push, set, get , child } from "firebase/database"
+import { ref, push, set, get , child, update } from "firebase/database"
 import { database } from '../../firebase/firebaseConfig';
+import ColorSelector from '../ColorSelector';
+import { NoteCreatorContext } from '../Contexts/NoteCreatorContext';
 
 const NoteCreator = () => {
 
@@ -17,6 +19,19 @@ const NoteCreator = () => {
         formState: { errors },
         setValue,
       } = useForm();
+
+      const colorChangeHandler = (id: string, color: string) => {
+        const notesListCopy = [...notesList];
+        notesListCopy.forEach((note) => {
+          if (note.id === id) {
+            note.config.color = color;
+            setNotesList(notesListCopy);
+            const noteRef = ref(database, `/Notes/active/${note.id}`);
+            update(noteRef, note);
+          }
+        });
+      };
+    
 
       const createNote = (header:string, description:string) =>{
         const note: Note = {
@@ -35,9 +50,12 @@ const NoteCreator = () => {
         setNotesList([...notesList,note])
         const noteListRef =  ref(database,"/Notes/active")
         const newNoteRef =  push(noteListRef)
+        note.id = newNoteRef.key!;
         set(newNoteRef,note)
       }
 
+
+     
       const onFormSubmit = (data:any) =>{
         
 
@@ -61,6 +79,8 @@ const NoteCreator = () => {
 
   return (
     <>
+    <NoteCreatorContext.Provider 
+    value={{changeColor:colorChangeHandler}}>
     <div className='flex justify-center'>
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className='flex flex-col justify-center px-4 py-3 rounded-md items-center shadow-md border'>
@@ -121,6 +141,7 @@ const NoteCreator = () => {
     <div className='flex flex-wrap'>
         <NoteList notes={notesList} />
     </div>
+    </NoteCreatorContext.Provider>
     </>
   )
 }
