@@ -3,6 +3,8 @@ import { Note } from '../Layout/MainLayout'
 import Button from './Button'
 import { MdMoreVert, MdOutlineArchive, MdOutlineImage } from 'react-icons/md'
 import { TbBellPlus, TbPalette, TbPinned, TbUserPlus } from 'react-icons/tb'
+import { Menu } from "@headlessui/react";
+import ColorSelector from '../ColorSelector'
 
 
 export type ActionsButtonType = {
@@ -44,6 +46,38 @@ const NoteItem = (props:Note) => {
 
   const buildActionsList = () =>{
     return actionsList.map((action) =>{
+      if (action.id === 2)
+      return(
+        <Menu
+        key={action.id}
+        as="div"
+        className="relative inline-block text-left"
+      >
+        <Menu.Button className="flex p-2 hover:bg-gray-200 rounded-full">
+          <TbPalette size={18} />
+          {/* <Button
+            customCssProps=" text-gray-600 "
+            type="button"
+            colorScheme="white"
+            radius="full"
+            variant="ghost"
+            padding="rounded"
+            onClick={action.actionCallback}
+            buttonSize="xs"
+            iconOnly
+            icon={action.icon}
+          ></Button> */}
+        </Menu.Button>
+        <Menu.Items>
+          <Menu.Item as="div" className="absolute">
+            <ColorSelector
+              
+            />
+          </Menu.Item>
+        </Menu.Items>
+      </Menu>
+    );
+      
       return(
         <Button
           key={action.id}
