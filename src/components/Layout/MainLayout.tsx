@@ -9,7 +9,8 @@ import {
 import { TbArchive, TbEdit } from "react-icons/tb";
 import Sidebar from '../Sidebar';
 import { MainContext } from '../Contexts/MainContext';
-import NoteCreator from '../UI/NoteCreator';
+import NoteCreator from '../UI/NoteManager';
+import { NoteManagerActivePath, remotePath } from '../../utils/utils';
   
 
 
@@ -40,8 +41,20 @@ const MainLayout = () => {
 
   const [headerTitle,setHeaderTitle] = useState("Now Notes")
 
+  const [ currentActivePath, setCurrentActivePath] = useState<NoteManagerActivePath>({
+    name:"ACTIVE",
+    path:remotePath.active
+  })
+
   const titleSetter = (title:string) =>{
     setHeaderTitle(title)
+  }
+
+  // state setter for side bar
+
+
+  const noteManagerActivePathHandler = (newState:NoteManagerActivePath) =>{
+    setCurrentActivePath(newState)
   }
 
     const menuIconSize = 25
@@ -67,12 +80,13 @@ const menuList: MenuItem[] =[
       <div className="flex-1 flex flex-col overflow-y-hidden sm:flex-row">
         <main className="flex-1 min-w-0 overflow-y-auto bg-white m-2">
           <div className='flex flex-col m-3'>
-            <NoteCreator />
+            <NoteCreator activePath={currentActivePath} />
           </div>
         </main>
 
         <nav className="order-first flex-none pt-2 sm:w-72 bg-white">
-          <Sidebar menuList={menuList} />
+          <Sidebar menuList={menuList}
+          activePathChangeHandler ={noteManagerActivePathHandler} />
         </nav>
       </div>
     </div>

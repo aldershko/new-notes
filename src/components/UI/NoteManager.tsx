@@ -7,11 +7,14 @@ import { ref, push, set, get , child, update } from "firebase/database"
 import { database } from '../../firebase/firebaseConfig';
 import ColorSelector from '../ColorSelector';
 import { NoteCreatorContext } from '../Contexts/NoteCreatorContext';
+import { NoteManagerActivePath } from '../../utils/utils';
 
-const NoteCreator = () => {
+const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
 
     const [isCreating,setIsCreating] = useState(false)
     const [notesList,setNotesList] = useState<Note[]>([])
+
+    const { activePath } = props;
 
     const {
         register,
@@ -75,6 +78,18 @@ const NoteCreator = () => {
           }
         })
       },[])
+
+
+      useEffect(() => {
+        const dbRef = ref(database);
+        get(child(dbRef, activePath.path)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const activeNotes = Object.values(snapshot.val());
+            console.log(snapshot.val());
+            setNotesList(activeNotes as Note[]);
+          }
+        });
+      }, [activePath]);
       
 
   return (

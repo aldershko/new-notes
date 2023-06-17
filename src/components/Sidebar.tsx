@@ -2,20 +2,35 @@ import React, { ReactNode, useContext, useState } from "react";
 import { MenuItem } from "./Layout/MainLayout";
 import Button from "./UI/Button";
 import { MainContext } from "./Contexts/MainContext";
+import { NoteManagerActivePath, remotePath } from "../utils/utils";
 
 const Sidebar = (props: {
   menuList: MenuItem[];
   selectHandler?: (component: ReactNode) => void;
+  activePathChangeHandler?:(newState: NoteManagerActivePath) => void;
 }) => {
   const { setTitle } = useContext(MainContext);
   const [currentSelectedMenu, setCurrentSelectedMenu] = useState(0);
 
-  const { menuList } = props;
+  const { menuList,activePathChangeHandler } = props;
 
   const menuHandler = (id: number) => {
     setCurrentSelectedMenu(id);
+    stateSetter(id)
     if (setTitle) setTitle(menuList[id].title);
   };
+
+  const stateSetter = (id:number) =>{
+    if(id === 3 ){
+      if(activePathChangeHandler) activePathChangeHandler({ name:"ARCHIVE",path:remotePath.archive})
+    }
+    if(id === 4){
+      if(activePathChangeHandler) activePathChangeHandler({ name:"TRASH" , path:remotePath.trash})
+    }
+    if(id===0){
+      if(activePathChangeHandler)activePathChangeHandler({name:"ACTIVE" , path:remotePath.active})
+    }
+  }
 
   //Build Menu items
   const buildMenu = () => {
@@ -54,10 +69,7 @@ const Sidebar = (props: {
       {/* <div className="justify-left relative flex h-14 flex-row items-center  border-b border-divider py-2 px-3 align-middle "></div> */}
       {/* {buildMenu()} */}
       {buildMenu()}
-      <div className="absolute bottom-0 flex w-64 flex-col border-t border-divider">
-        {/* <span className="text-center">LOGOUT</span> */}
-        {/* <Header /> */}
-      </div>
+    
     </>
   );
 };
