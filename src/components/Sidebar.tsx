@@ -20,6 +20,8 @@ const Sidebar = (props: {
     if (setTitle) setTitle(menuList[id].title);
   };
 
+// setting path in firebase for each sidebar
+
   const stateSetter = (id:number) =>{
     if(id === 3 ){
       if(activePathChangeHandler) activePathChangeHandler({ name:"ARCHIVE",path:remotePath.archive})
