@@ -6,6 +6,8 @@ export type NoteCreatorContextType = {
     archiveNote?: (id:string) => void;
     deleteNote?: (id:string) => void;
     trashNote?:(id:string) => void;
+    noteColor?: string;
+    notesList?: Note[];
 }
 
 export const NoteCreatorContext = createContext<NoteCreatorContextType>({});

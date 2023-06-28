@@ -20,6 +20,13 @@ title:string
 icon:ReactNode
 }
 
+export enum NoteManagerState {
+  ACTIVE,
+  ARCHIVE,
+  TRASH,
+}
+
+
 
 export type Note = {
   id:string

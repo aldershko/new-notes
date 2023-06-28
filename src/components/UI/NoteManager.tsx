@@ -51,7 +51,7 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
             }   
         }
         setNotesList([...notesList,note])
-        const noteListRef =  ref(database,"/Notes/active")
+        const noteListRef =  ref(database,activePath.path)
         const newNoteRef =  push(noteListRef)
         note.id = newNoteRef.key!;
         set(newNoteRef,note)
@@ -122,94 +122,100 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
         createNote(data.header,data.body)
         setValue("header","")
         setValue("body",'')
+        setIsCreating(false)
       }
 
       useEffect(() =>{
         const dbRef = ref(database)
-        get(child(dbRef,"/Notes/active")).then((snapshot) =>{
+        get(child(dbRef,activePath.path)).then((snapshot) =>{
           if(snapshot.exists()){
             const activeNotes = Object.values(snapshot.val())
             console.log(snapshot.val())
             setNotesList(activeNotes as Note[])
           }
         })
-      },[])
+      },[activePath])
 
 
-      useEffect(() => {
-        const dbRef = ref(database);
-        get(child(dbRef, activePath.path)).then((snapshot) => {
-          if (snapshot.exists()) {
-            const activeNotes = Object.values(snapshot.val());
-            console.log(snapshot.val());
-            setNotesList(activeNotes as Note[]);
-          }
-        });
-      }, [activePath]);
-      
+   
 
   return (
     <>
     <NoteCreatorContext.Provider 
     value={{changeColor:colorChangeHandler, archiveNote: archiveSingleNote,
     trashNote:trashSingleNote}}>
-    <div className='flex justify-center'>
-        <form onSubmit={handleSubmit(onFormSubmit)}>
-            <div className='flex flex-col justify-center px-4 py-3 rounded-md items-center shadow-md border'>
-                {!isCreating && (
-                    <div className='flex justify-start font-medium' onClick={()=>{
-                        setIsCreating(true)
-                    }}> Create Note...</div>
-                ) }
-                {isCreating && (
-                     <div>
-                     <TextInput
-                       type="text"
-                       colorScheme="white"
-                       rounded="md"
-                       size="xs"
-                       placeHolder="Title"
-                       borderScheme="white"
-                       register={register}
-                       error={errors}
-                       name="header"
-                       validationSchema={{
-                         required: false,
-                         // pattern:
-                         //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                        //  patternError: "Invalid password.",
-                         requiredError: "Password cannot be empty",
-                       }}
-                     />
-                     <TextInput
-                       type="text"
-                       colorScheme="white"
-                       rounded="md"
-                       size="xs"
-                       placeHolder="Description"
-                       borderScheme="white"
-                       register={register}
-                       error={errors}
-                       name="body"
-                       validationSchema={{
-                         required: false,
-                         // pattern:
-                         //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                         patternError: "Invalid password.",
-                         requiredError: "Password cannot be empty",
-                       }}
-                     />
-                     <button type="submit" className="">
-                       Submit
-                     </button>
-                   </div>
-                 )}{" "}
-
-                
-
-            </div>
-            </form>
-    </div>
+    <div className="flex justify-center ">
+          <form
+            onSubmit={handleSubmit(onFormSubmit)}
+            
+          >
+            {activePath.name === "ACTIVE" && (
+              <div
+                className={`md:w-128 sm:w-96 flex flex-col mb-3 justify-center px-4 py-3 rounded-md  shadow-md shadow-gray-400 border`}
+              >
+                <div className="flex ">
+                  {!isCreating && (
+                    <div
+                      className="flex justify-start font-medium"
+                      onClick={() => {
+                        setIsCreating(true);
+                      }}
+                    >
+                      Create Note...
+                    </div>
+                  )}
+                  {isCreating && (
+                    <div className="w-full">
+                      <TextInput
+                        type="text"
+                        colorScheme="white"
+                        rounded="md"
+                        size="xs"
+                        placeHolder="Title"
+                        borderScheme="white"
+                        register={register}
+                        error={errors}
+                        name="header"
+                        // isNoteInput={true}
+                        validationSchema={{
+                          required: false,
+                          // pattern:
+                          //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                          patternError: "",
+                          requiredError: "empty",
+                        }}
+                      />
+                      <TextInput
+                        type="text"
+                        colorScheme="white"
+                        rounded="md"
+                        size="xs"
+                        placeHolder="Description"
+                        borderScheme="white"
+                        register={register}
+                        error={errors}
+                        name="body"
+                        // isNoteInput={true}
+                        validationSchema={{
+                          required: false,
+                          // pattern:
+                          //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                          patternError: "Invalid password.",
+                          requiredError: "empty",
+                        }}
+                      />
+                      <div className="flex justify-between">
+                        <button type="submit" className="">
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </form>
+        </div>
     <div className='flex flex-wrap'>
         <NoteList notes={notesList} />
     </div>
