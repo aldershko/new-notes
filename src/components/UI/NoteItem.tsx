@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useContext } from 'react'
 import { Note } from '../Layout/MainLayout'
 import Button from './Button'
 import { MdMoreVert, MdOutlineArchive, MdOutlineImage } from 'react-icons/md'
@@ -14,9 +14,11 @@ export type ActionsButtonType = {
   actionCallback?: () => void
 }
 
+
+
 const NoteItem = (props:Note) => {
 
-
+const {archiveNote , trashNote} = useContext(NoteCreatorContext);
   const actionsList: ActionsButtonType[] = [
     {
       id: 0,
@@ -37,10 +39,17 @@ const NoteItem = (props:Note) => {
     {
       id: 4,
       icon: <MdOutlineArchive size={18} />,
+      actionCallback: ()=>{
+        if(archiveNote)
+        archiveNote(props.id)
+      }
     },
     {
       id: 5,
       icon: <MdMoreVert size={18} />,
+      actionCallback:() =>{
+        if(trashNote) trashNote(props.id)
+      }
       
     },
   ];

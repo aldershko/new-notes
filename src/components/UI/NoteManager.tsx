@@ -3,11 +3,11 @@ import {useForm} from 'react-hook-form'
 import TextInput from './TextInput';
 import { Note } from '../Layout/MainLayout';
 import NoteList from './NoteList';
-import { ref, push, set, get , child, update } from "firebase/database"
+import { ref, push, set, get , child, update, remove } from "firebase/database"
 import { database } from '../../firebase/firebaseConfig';
 import ColorSelector from '../ColorSelector';
 import { NoteCreatorContext } from '../Contexts/NoteCreatorContext';
-import { NoteManagerActivePath } from '../../utils/utils';
+import { NoteManagerActivePath, remotePath } from '../../utils/utils';
 
 const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
 
@@ -58,6 +58,59 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
       }
 
 
+      const archiveSingleNote = (id: string) => {
+        const notesListCopy = [...notesList];
+        notesListCopy.forEach((note) => {
+          if (note.id === id) {
+            const noteArchiveRef = ref(database, `/Notes/archive/${note.id}`);
+            const newNoteArchiveRef =  push(noteArchiveRef)
+            note.id = newNoteArchiveRef.key!;
+            set(newNoteArchiveRef,note)
+          }
+        });
+       
+      };
+
+      const trashSingleNote = (id:string)=>{
+        const notesListCopy = [...notesList]
+        notesListCopy.forEach((note) =>{
+          if(note.id === id){
+            const noteCopy = Object.assign({},note);
+            const noteTrashRef = ref(database,remotePath.trash)
+            const newTrashRef = push(noteTrashRef)
+            noteCopy.id = newTrashRef.key!;
+            console.log(newTrashRef.key)
+            set(newTrashRef,noteCopy).then(() =>{
+              deleteSingleNote(id)
+            })
+
+          }
+        })
+      }
+
+      const deleteLocalNote = (id: string) => {
+        const notesListCopy = [...notesList];
+        notesListCopy.forEach((note, index) => {
+          if (note.id === id) {
+            notesListCopy.splice(index, 1);
+            setNotesList(notesListCopy);
+          }
+        });
+      };
+    
+
+      const deleteSingleNote = async (id: string) => {
+        const noteDeleteRef = ref(database, `/Notes/active/${id}`);
+        try {
+          await remove(noteDeleteRef);
+          console.log("id:", id);
+          deleteLocalNote(id);
+        } catch (error) {
+          console.log("Cannot delete note...");
+        }
+      };
+    
+
      
       const onFormSubmit = (data:any) =>{
         
@@ -95,7 +148,8 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
   return (
     <>
     <NoteCreatorContext.Provider 
-    value={{changeColor:colorChangeHandler}}>
+    value={{changeColor:colorChangeHandler, archiveNote: archiveSingleNote
+    trashNote:trashSingleNote}}>
     <div className='flex justify-center'>
         <form onSubmit={handleSubmit(onFormSubmit)}>
             <div className='flex flex-col justify-center px-4 py-3 rounded-md items-center shadow-md border'>
