@@ -62,13 +62,16 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
         const notesListCopy = [...notesList];
         notesListCopy.forEach((note) => {
           if (note.id === id) {
-            const noteArchiveRef = ref(database, `/Notes/archive/${note.id}`);
-            const newNoteArchiveRef =  push(noteArchiveRef)
-            note.id = newNoteArchiveRef.key!;
-            set(newNoteArchiveRef,note)
+            const noteCopy = Object.assign({}, note);
+            const noteArchiveRef = ref(database, remotePath.archive);
+            const newArchiveRef = push(noteArchiveRef);
+            noteCopy.id = newArchiveRef.key!;
+            console.log(newArchiveRef.key);
+            set(newArchiveRef, noteCopy).then(() => {
+              deleteSingleNote(id);
+            });
           }
         });
-       
       };
 
       const trashSingleNote = (id:string)=>{
@@ -148,7 +151,7 @@ const NoteCreator = (props:{activePath: NoteManagerActivePath}) => {
   return (
     <>
     <NoteCreatorContext.Provider 
-    value={{changeColor:colorChangeHandler, archiveNote: archiveSingleNote
+    value={{changeColor:colorChangeHandler, archiveNote: archiveSingleNote,
     trashNote:trashSingleNote}}>
     <div className='flex justify-center'>
         <form onSubmit={handleSubmit(onFormSubmit)}>
